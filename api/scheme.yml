@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Hotel Booking Service
+  description: API for managing hotel reservations, providing features such as creating new orders, retrieving lists of orders, and more.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:9997/v1/orders
+
+paths:
+  /:
+    post:
+      summary: Create a new order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MakeOrderRequest'
+      responses:
+        '201':
+          description: Order created successfully
+        '400':
+          description: Bad Request
+  /list:
+    get:
+      summary: Get a list of orders
+      parameters:
+        - name: email
+          in: query
+          required: true
+          description: User email
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrdersResponse'
+        '204':
+          description: No content
+
+components:
+  schemas:
+    MakeOrderRequest:
+      type: object
+      properties:
+        CategoryRoom:
+          type: string
+        UserEmail:
+          type: string
+        From:
+          type: string
+        To:
+          type: string
+      required:
+        - CategoryRoom
+        - UserEmail
+        - From
+        - To
+
+    Order:
+      type: object
+      properties:
+        CategoryRoom:
+          type: string
+        UserEmail:
+          type: string
+        From:
+          type: string
+        To:
+          type: string
+      required:
+        - CategoryRoom
+        - UserEmail
+        - From
+        - To
+
+    ListOrdersResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Order'

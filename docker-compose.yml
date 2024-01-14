@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  app:
+    image: cosmtrek/air:v1.49.0
+    env_file:
+      - .env.sample
+    volumes:
+      - ./:/app
+      - ~/go/pkg:/go/pkg # Mount (go env GOPATH)
+    ports:
+      - "9997:9997"
+    working_dir: /app
+    command: --build.cmd "go build -o ./tmp/main ./cmd/main.go" \
+      --build.bin "./tmp/main" \
+      --build.exclude_dir "assets,tmp,vendor,testdat,bin" \
+      --tmp_dir "tmp"
